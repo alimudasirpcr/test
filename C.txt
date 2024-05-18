@@ -1,0 +1,32 @@
+# --- C. Increase the Number of Epochs ---
+
+# Function to build and evaluate the model with 100 epochs
+def build_and_evaluate_model_100_epochs():
+    model = Sequential()
+    model.add(Dense(10, activation='relu', input_shape=(X_normalized.shape[1],)))
+    model.add(Dense(1, activation='linear'))
+    model.compile(optimizer='adam', loss='mean_squared_error')
+
+    X_train, X_test, y_train, y_test = train_test_split(X_normalized, y, test_size=0.3, random_state=42)
+    model.fit(X_train, y_train, epochs=100, verbose=0)  # 100 epochs
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+    return mse
+
+# Repeat the experiment 50 times with 100 epochs
+mse_values_100_epochs = [build_and_evaluate_model_100_epochs() for _ in range(50)]
+
+# Report the results for 100 epochs
+mean_mse_100_epochs = np.mean(mse_values_100_epochs)
+std_dev_mse_100_epochs = np.std(mse_values_100_epochs)
+print(f"\nMean MSE (100 Epochs): {mean_mse_100_epochs:.2f}")
+print(f"Standard Deviation of MSE (100 Epochs): {std_dev_mse_100_epochs:.2f}")
+
+# Compare the mean MSE from part B (50 epochs) and part C (100 epochs)
+print("\nComparison (Normalized Data):")
+if mean_mse_100_epochs < mean_mse_normalized:
+    print("The mean MSE is lower with 100 epochs.")
+elif mean_mse_100_epochs > mean_mse_normalized:
+    print("The mean MSE is higher with 100 epochs.")
+else:
+    print("The mean MSE is the same with 50 and 100 epochs.")

@@ -1,0 +1,31 @@
+# Import libraries (modified)
+import pandas as pd
+import numpy as np
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+
+# ... (rest of the code from previous steps)
+
+# --- D. Increase the Number of Hidden Layers ---
+
+# ... (build_and_evaluate_model_three_layers function remains the same)
+
+# Repeat the experiment 50 times with three hidden layers
+mse_values_three_layers = [build_and_evaluate_model_three_layers() for _ in range(50)]
+
+# Report the results for three hidden layers
+mean_mse_three_layers = np.mean(mse_values_three_layers)
+std_dev_mse_three_layers = np.std(mse_values_three_layers)
+print(f"\nMean MSE (Three Layers): {mean_mse_three_layers:.2f}")
+print(f"Standard Deviation of MSE (Three Layers): {std_dev_mse_three_layers:.2f}")
+
+# Compare the mean MSE from part B (one hidden layer) and part D (three hidden layers)
+print("\nComparison (Normalized Data):")
+if mean_mse_three_layers < mean_mse_normalized:
+    print("The mean MSE is lower with three hidden layers.")
+elif mean_mse_three_layers > mean_mse_normalized:
+    print("The mean MSE is higher with three hidden layers.")
+else:
+    print("The mean MSE is the same with one and three hidden layers.")

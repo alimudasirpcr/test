@@ -1,0 +1,35 @@
+# --- B. Normalize the Data ---
+
+# Normalize the features
+X_normalized = (X - X.mean()) / X.std()
+
+# Function to build and evaluate the model with normalized data
+def build_and_evaluate_model_normalized():
+    model = Sequential()
+    model.add(Dense(10, activation='relu', input_shape=(X_normalized.shape[1],)))
+    model.add(Dense(1, activation='linear'))
+    model.compile(optimizer='adam', loss='mean_squared_error')
+
+    X_train, X_test, y_train, y_test = train_test_split(X_normalized, y, test_size=0.3, random_state=42)
+    model.fit(X_train, y_train, epochs=50, verbose=0)
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+    return mse
+
+# Repeat the experiment 50 times with normalized data
+mse_values_normalized = [build_and_evaluate_model_normalized() for _ in range(50)]
+
+# Report the results for normalized data
+mean_mse_normalized = np.mean(mse_values_normalized)
+std_dev_mse_normalized = np.std(mse_values_normalized)
+print(f"\nMean MSE (Normalized): {mean_mse_normalized:.2f}")
+print(f"Standard Deviation of MSE (Normalized): {std_dev_mse_normalized:.2f}")
+
+# Compare the mean MSE from part A and part B
+print("\nComparison:")
+if mean_mse_normalized < mean_mse:
+    print("The mean MSE is lower with normalized data.")
+elif mean_mse_normalized > mean_mse:
+    print("The mean MSE is higher with normalized data.")
+else:
+    print("The mean MSE is the same with and without normalization.")
